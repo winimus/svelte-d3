@@ -96,9 +96,15 @@ import Scatterplots from './Scatterplots.svelte'
                 width: 40,
                 height: dy(bar.value),
                 x: (40 + margin.mid) * i,
-                y:  height - dy(bar.value)
+                y:  height - dy(bar.value),
+                cursor: 'pointer'
             }
         })
+    }
+    function barclick(i) {
+        console.log(i)
+        bar_data.splice(i, 1)
+        bar_data = bar_data;
     }
 
     onMount(() => {
@@ -114,7 +120,7 @@ import Scatterplots from './Scatterplots.svelte'
     <svg width={svgWidth} height={svgHeight}>
         <g bind:this={el} width={width} height={height} transform={translate(margin.left, margin.top)}>
             {#each rects as r, i}
-                <rect {...r}></rect>
+                <rect {...r} on:dblclick={() => barclick(i)}></rect>
             {/each}
         </g>
     </svg>

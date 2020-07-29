@@ -84,7 +84,7 @@
     let colorScale = d3.scaleOrdinal(d3.schemeCategory10)
 
     function handleUpdate() {
-        console.log('click')
+        
         bar_data.forEach(function (d) {
             d.value = Math.random() * 100
         })
@@ -114,6 +114,7 @@
             .style('fill', (d, i) => colorScale(i))
             .attr('x', (d, i) => (40 + margin.mid) * i)
             .attr('y', (d, i) => height - dy(d.value))
+            .on('click', () => console.log('click'));
     })
 
     afterUpdate(() => {
