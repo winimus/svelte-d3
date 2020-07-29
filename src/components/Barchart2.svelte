@@ -1,0 +1,121 @@
+<script>
+    import { onMount, beforeUpdate, afterUpdate } from 'svelte'
+    import * as d3 from 'd3'
+import App from '../App.svelte'
+import Barchart from './Barchart.svelte'
+import Scatterplots from './Scatterplots.svelte'
+
+    function translate(x, y) {
+        return 'translate(' + x + ',' + y + ')'
+    }
+
+    let svgWidth = 550
+    let svgHeight = 550
+    let margin = { top: 30, right: 10, bottom: 20, left: 40, mid: 10 }
+    let width = svgWidth - margin.left - margin.right
+    let height = svgHeight - margin.top - margin.bottom
+
+    //-------------------------------------------------------------bar
+    let bar_domain = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']
+    let bar_data = [
+        {
+            name: 'A',
+            value: 10,
+            color: '#FF0000',
+        },
+        {
+            name: 'B',
+            value: 10,
+            color: '#FF8000',
+        },
+        {
+            name: 'C',
+            value: 10,
+            color: '#FFFF00',
+        },
+        {
+            name: 'D',
+            value: 10,
+            color: '#80FF00',
+        },
+        {
+            name: 'E',
+            value: 10,
+            color: '#00FFFF',
+        },
+        {
+            name: 'F',
+            value: 10,
+            color: '#0080FF',
+        },
+        {
+            name: 'G',
+            value: 10,
+            color: '#0000FF',
+        },
+        {
+            name: 'H',
+            value: 10,
+            color: '#8000FF',
+        },
+        {
+            name: 'I',
+            value: 10,
+            color: '#FF00FF',
+        },
+        {
+            name: 'J',
+            value: 10,
+            color: '#848484',
+        },
+    ]
+
+    bar_data.forEach(function (d) {
+        d.value = Math.random() * 100
+    })
+
+    let el
+    let svg;
+    let dx = d3.scaleBand().domain(bar_domain).range([0, width])
+    let dy = d3.scaleLinear().domain([0, 100]).range([height, 0])
+
+    let dxAxis = d3.axisBottom(dx)
+    let dyAxis = d3.axisLeft(dy)
+
+    let colorScale = d3.scaleOrdinal(d3.schemeCategory10)
+
+    function handleUpdate() {
+        console.log('click')
+        bar_data.forEach(function (d) {
+            d.value = Math.random() * 101
+        })
+        bar_data = bar_data
+        console.log(bar_data)
+    }
+    let rects;
+    $: {
+        rects = bar_data.map((bar, i) => {
+            console.log(bar)
+            console.log(dy(bar.value))
+            return {
+                fill: colorScale(i),
+                width: 40,
+                height: dy(bar.value),
+                x: (40 + margin.mid) * i,
+                y:  height - dy(bar.value)
+            }
+        })
+    }
+
+</script>
+
+<button on:click={handleUpdate}>update</button>
+<div>
+    <svg width={svgWidth} height={svgHeight}>
+        <g width={width} height={height} transform={translate(50, 50)}>
+            {#each rects as r, i}
+                <rect {...r}></rect>
+            {/each}
+        </g>
+    </svg>
+</div>
