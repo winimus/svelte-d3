@@ -5,4 +5,5 @@
 
 <div>
 	<Barchart></Barchart>
+	<Barchart2></Barchart2>
 </div>

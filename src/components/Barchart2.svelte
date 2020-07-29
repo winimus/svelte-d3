@@ -73,9 +73,7 @@ import Scatterplots from './Scatterplots.svelte'
     bar_data.forEach(function (d) {
         d.value = Math.random() * 100
     })
-
-    let el
-    let svg;
+    let el;
     let dx = d3.scaleBand().domain(bar_domain).range([0, width])
     let dy = d3.scaleLinear().domain([0, 100]).range([height, 0])
 
@@ -85,18 +83,14 @@ import Scatterplots from './Scatterplots.svelte'
     let colorScale = d3.scaleOrdinal(d3.schemeCategory10)
 
     function handleUpdate() {
-        console.log('click')
         bar_data.forEach(function (d) {
             d.value = Math.random() * 101
         })
         bar_data = bar_data
-        console.log(bar_data)
     }
     let rects;
     $: {
         rects = bar_data.map((bar, i) => {
-            console.log(bar)
-            console.log(dy(bar.value))
             return {
                 fill: colorScale(i),
                 width: 40,
@@ -107,13 +101,18 @@ import Scatterplots from './Scatterplots.svelte'
         })
     }
 
+    onMount(() => {
+        console.log('mount')
+        d3.select(el).append('g').attr('transform', translate(0, width)).call(dxAxis)
+        d3.select(el).append('g').call(dyAxis)
+    })
+
 </script>
 
 <button on:click={handleUpdate}>update</button>
 <div>
     <svg width={svgWidth} height={svgHeight}>
-        <g width={width} height={height} transform={translate(50, 50)}>
-            <g>
+        <g bind:this={el} width={width} height={height} transform={translate(margin.left, margin.top)}>
             {#each rects as r, i}
                 <rect {...r}></rect>
             {/each}
