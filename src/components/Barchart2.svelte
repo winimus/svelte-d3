@@ -113,6 +113,7 @@ import Scatterplots from './Scatterplots.svelte'
 <div>
     <svg width={svgWidth} height={svgHeight}>
         <g width={width} height={height} transform={translate(50, 50)}>
+            <g>
             {#each rects as r, i}
                 <rect {...r}></rect>
             {/each}

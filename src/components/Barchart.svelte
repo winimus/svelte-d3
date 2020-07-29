@@ -11,7 +11,7 @@
     let margin = { top: 30, right: 10, bottom: 20, left: 40, mid: 10 }
     let width = svgWidth - margin.left - margin.right
     let height = svgHeight - margin.top - margin.bottom
-
+    
     //-------------------------------------------------------------bar
     let bar_domain = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']
     let bar_data = [
@@ -68,8 +68,10 @@
     ]
 
     bar_data.forEach(function (d) {
-        d.value = Math.random() * 101
+        d.value = Math.random() * 100;
     })
+
+    $: bar_data = bar_data;
 
     let el
     let svg
@@ -84,10 +86,9 @@
     function handleUpdate() {
         console.log('click')
         bar_data.forEach(function (d) {
-            d.value = Math.random() * 101
+            d.value = Math.random() * 100
         })
         bar_data = bar_data
-        console.log(bar_data)
     }
 
     onMount(() => {
@@ -103,10 +104,6 @@
         svg.append('g').attr('transform', translate(0, width)).call(dxAxis)
 
         svg.append('g').call(dyAxis)
-    })
-
-    afterUpdate(() => {
-        console.log('after')
 
         svg.selectAll('rect')
             .data(bar_data)
@@ -116,6 +113,14 @@
             .attr('height', (d) => dy(d.value))
             .style('fill', (d, i) => colorScale(i))
             .attr('x', (d, i) => (40 + margin.mid) * i)
+            .attr('y', (d, i) => height - dy(d.value))
+    })
+
+    afterUpdate(() => {
+        console.log('after')
+
+        svg.selectAll('rect')
+            .attr('height', (d) => dy(d.value))
             .attr('y', (d, i) => height - dy(d.value))
     })
 </script>
