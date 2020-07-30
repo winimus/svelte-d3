@@ -1,9 +1,11 @@
-<script lang='ts'>
-	import Barchart from './components/Barchart.svelte';
-	import Barchart2 from './components/Barchart2.svelte';
+<script lang="ts">
+  import Barchart from "./components/Barchart.svelte";
+  import Barchart2 from "./components/Barchart2.svelte";
+  import Barchart3 from "./components/Barchart3.svelte";
+
+  
 </script>
 
 <div>
-	<Barchart></Barchart>
-	<Barchart2></Barchart2>
+    <Barchart3 />
 </div>
